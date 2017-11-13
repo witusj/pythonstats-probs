@@ -11,7 +11,7 @@ output: html_notebook
 options(scipen=999)
 ```
 
-Stel we hebben een munt en gooien deze k maal. Bij kop is `x` gelijk aan 1 en bij munt -1. De kans dat we kop of munt gooien is 50% en dit betekent dat de verwachte waarde van de som van uitkomsten van alle worpen gelijk is aan 0 (nul):
+Stel we hebben een munt en gooien deze $k$ maal. Bij kop is $x$ gelijk aan 1 en bij munt -1. De kans dat we kop of munt gooien is 50% en dit betekent dat de verwachte waarde van de som van uitkomsten van alle worpen gelijk is aan 0 (nul):
 
 $$S = \sum_{i=1}^{k} x_i$$
 $$\mathbf{E}(S) = 0$$
@@ -27,7 +27,7 @@ generate_counts <- function(k = 100, n=100) {
 ```
 
 <br>
-Nu kunnen we `k` laten variëren (in dit geval door deze met een factor 10 te verhogen) en de waarden van S samenvatten in een histogram.
+Nu kunnen we `k` laten variëren (in dit geval door deze met een factor 10 te verhogen) en de waarden van `S` samenvatten in een histogram.
 
 ```{r}
 k = 100
@@ -59,7 +59,7 @@ abline(v=lbound, col="red")
 abline(v=ubound, col="red")
 ```
 
-In bovenstaande grafieken zijn met rode lijnen onder- en bovengrenzen aangegeven (resp. `lbound` en `ubound`) met de waarden $\pm 4*\sqrt{k}$. Later zullen we aantonen dat de kans dat $S_k$, d.w.z. de som van uitkomsten bij een serie van $k$ worpen, kleiner is dan $2*10^{-8}$ (0.000002%). Zoals we boven kunnen zien, komt inderdaad bij geen enkele simulatie $S$ buiten de rode lijnen.
+In bovenstaande grafieken zijn met rode lijnen onder- en bovengrenzen aangegeven (resp. `lbound` en `ubound`) met de waarden $\pm 4*\sqrt{k}$. Later zullen we aantonen dat de kans dat $S_k$, d.w.z. de som van uitkomsten bij een serie van $k$ worpen, buiten de range van $\pm 4*\sqrt{k}$ komt kleiner is dan $2*10^{-8}$ (0.000002%). Zoals we boven kunnen zien, komt inderdaad bij geen enkele simulatie $S$ buiten de rode lijnen.
 
 Als we de schaal op de x-as baseren op de extreme waarden die $S$ theoretisch kan aannemen ($\pm k$), zien we dat de range waartussen $S$ zich met grote waarschijnlijkheid tussen bevindt, relatief smaller wordt naarmate $k$ toeneemt.
 
@@ -105,4 +105,6 @@ $$\lim_{k\to\infty} \pm \frac{4*\sqrt{k}}{k} = \lim_{k\to\infty} \pm \frac{4}{\s
 En aangezien $S_k$ bijna altijd tussen de berekende onder- en bovengrenzen ligt, betekent dit dat als $k\to\infty$, $\frac{S_k}{k}$ ook naar nul gaat.
 
 We hebben hiermee de uitspraak 'kans van 50%' geformaliseerd. Het vakgebied Kansrekening gaat over de Wiskunde die nodig is om uitspraken omtrent kansen formeel te bewijzen.
+
+!!Nog bespreken Monte Carlo
 
