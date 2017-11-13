@@ -1,0 +1,50 @@
+---
+title: "Kansberekening"
+output: html_notebook
+---
+
+```{r}
+options(scipen=999)
+```
+
+Stel we hebben een munt en gooien deze 100 maal. Bij kop is `x` gelijk aan 1 en bij munt -1. De verwachte som van alle worpen is dan gelijk aan 0 (nul):
+
+$$\sum_{i=1}^{100} x_i = 0$$
+
+```{r}
+generate_counts <- function(k = 1000, n=100) {
+  X = matrix(2*(runif(k*n)>0.5)-1, k, n)
+  S = colSums(X)
+  return(S)
+}
+
+generate_counts()
+k = 100
+lbound = round(-4*k^0.5)
+ubound = round(4*k^0.5)
+hist(generate_counts(k = k), xlim = range(lbound, ubound), col = "skyblue", main = paste("Histogram of k = " , k, " flips, boundaries = ", ubound))
+abline(v=lbound, col="red")
+abline(v=ubound, col="red")
+
+k = 1000
+lbound = round(-4*k^0.5)
+ubound = round(4*k^0.5)
+hist(generate_counts(k = k), xlim = range(lbound, ubound), col = "tomato", main = paste("Histogram of k = " , k, " flips, boundaries = ", ubound))
+abline(v=lbound, col="red")
+abline(v=ubound, col="red")
+
+k = 10000
+lbound = round(-4*k^0.5)
+ubound = round(4*k^0.5)
+hist(generate_counts(k = k), xlim = range(lbound, ubound), col = "gold", main = paste("Histogram of k = " , k, " flips, boundaries = ", ubound))
+abline(v=lbound, col="red")
+abline(v=ubound, col="red")
+
+k = 100000
+lbound = round(-4*k^0.5)
+ubound = round(4*k^0.5)
+hist(generate_counts(k = k), xlim = range(lbound, ubound), col = "mediumaquamarine", main = paste("Histogram of k = " , k, " flips, boundaries = ", ubound))
+abline(v=lbound, col="red")
+abline(v=ubound, col="red")
+```
+
