@@ -1,24 +1,35 @@
 ---
-title: "Kansberekening"
+title: "Kansrekening"
+author: "Witek ten Hove"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_notebook
+
 ---
 
-```{r}
+<em>Onderstaande is een bewerking van college 1.2 van de cursus "Statistics and Probability in Data Science using Python" (UCSanDiegoX -  DSE210x) op [Coursera](https://www.coursera.org/).</em>
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 options(scipen=999)
 ```
 
-Stel we hebben een munt en gooien deze 100 maal. Bij kop is `x` gelijk aan 1 en bij munt -1. De verwachte som van alle worpen is dan gelijk aan 0 (nul):
+Stel we hebben een munt en gooien deze k maal. Bij kop is `x` gelijk aan 1 en bij munt -1. De kans dat we kop of munt gooien is 50% en dit betekent dat de verwachte waarde van de som van uitkomsten van alle worpen gelijk is aan 0 (nul):
 
-$$\sum_{i=1}^{100} x_i = 0$$
+$$S = \sum_{i=1}^{k} x_i$$
+$$\mathbf{E}(S) = 0$$
+
+Als we dus voor $k$ een 'groot' getal nemen, bijvoorbeeld $k = 100$, dan verwachten we dat $S$ dichtbij nul zal uitkomen. We kunnen dit simuleren door een eerst een worpfunctie te creëren (`generate_counts()`) die `k` keer een munt gooit en deze handeling `n` maal herhaalt. De uitkomsten bewaren we in een matrix (`X`) met dimensie `k` x `n`. Voor iedere serie van `k` worpen berekenen we de som en bewaren die in een vector `S`.
 
 ```{r}
-generate_counts <- function(k = 1000, n=100) {
+generate_counts <- function(k = 100, n=100) {
   X = matrix(2*(runif(k*n)>0.5)-1, k, n)
   S = colSums(X)
   return(S)
 }
+```
 
-generate_counts()
+<br>
+Nu kunnen we `k` laten variëren (in dit geval door deze met een factor 10 te verhogen) en de waarden van S samenvatten in een histogram.
+
+```{r}
 k = 100
 lbound = round(-4*k^0.5)
 ubound = round(4*k^0.5)
@@ -48,7 +59,9 @@ abline(v=lbound, col="red")
 abline(v=ubound, col="red")
 ```
 
-Rescaling
+In bovenstaande grafieken zijn met rode lijnen onder- en bovengrenzen aangegeven (resp. `lbound` en `ubound`) met de waarden $\pm 4*\sqrt{k}$. Later zullen we aantonen dat de kans dat $S_k$, d.w.z. de som van uitkomsten bij een serie van $k$ worpen, kleiner is dan $2*10^{-8}$ (0.000002%). Zoals we boven kunnen zien, komt inderdaad bij geen enkele simulatie $S$ buiten de rode lijnen.
+
+Als we de schaal op de x-as baseren op de extreme waarden die $S$ theoretisch kan aannemen ($\pm k$), zien we dat de range waartussen $S$ zich met grote waarschijnlijkheid tussen bevindt, relatief smaller wordt naarmate $k$ toeneemt.
 
 ```{r}
 generate_counts <- function(k = 1000, n=100) {
@@ -57,7 +70,6 @@ generate_counts <- function(k = 1000, n=100) {
   return(S)
 }
 
-generate_counts()
 k = 100
 lbound = round(-4*k^0.5)
 ubound = round(4*k^0.5)
@@ -86,3 +98,11 @@ hist(generate_counts(k = k), xlim = range(-k, k), col = "mediumaquamarine", main
 abline(v=lbound, col="red")
 abline(v=ubound, col="red")
 ```
+
+Wat gebeurt er met de range $\pm 4*\sqrt{k}$ als $k\to\infty$?
+
+$$\lim_{k\to\infty} \pm \frac{4*\sqrt{k}}{k} = \lim_{k\to\infty} \pm \frac{4}{\sqrt{k}} = 0$$
+En aangezien $S_k$ bijna altijd tussen de berekende onder- en bovengrenzen ligt, betekent dit dat als $k\to\infty$, $\frac{S_k}{k}$ ook naar nul gaat.
+
+We hebben hiermee de uitspraak 'kans van 50%' geformaliseerd. Het vakgebied Kansrekening gaat over de Wiskunde die nodig is om uitspraken omtrent kansen formeel te bewijzen.
+
