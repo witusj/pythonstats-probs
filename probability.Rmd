@@ -59,7 +59,7 @@ abline(v=lbound, col="red")
 abline(v=ubound, col="red")
 ```
 
-In bovenstaande grafieken zijn met rode lijnen onder- en bovengrenzen aangegeven (resp. `lbound` en `ubound`) met de waarden $\pm 4*\sqrt{k}$. Later zullen we aantonen dat de kans dat $S_k$, d.w.z. de som van uitkomsten bij een serie van $k$ worpen, buiten de range van $\pm 4*\sqrt{k}$ komt kleiner is dan $2*10^{-8}$ (0.000002%). Zoals we boven kunnen zien, komt inderdaad bij geen enkele simulatie $S$ buiten de rode lijnen.
+In bovenstaande grafieken zijn met rode lijnen onder- en bovengrenzen aangegeven (resp. `lbound` en `ubound`) met de waarden $\pm 4*\sqrt{k}$. Later zullen we aantonen dat de kans dat $S_k$, d.w.z. de som van uitkomsten bij een serie van $k$ worpen, buiten de range van $\pm 4*\sqrt{k}$ komt kleiner is dan $2*10^{-8}$ (0.000002%). Zoals we in bovenstaande grafieken kunnen zien, komt inderdaad bij geen enkele simulatie $S$ buiten de rode lijnen.
 
 Als we de schaal op de x-as baseren op de extreme waarden die $S$ theoretisch kan aannemen ($\pm k$), zien we dat de range waartussen $S$ zich met grote waarschijnlijkheid tussen bevindt, relatief smaller wordt naarmate $k$ toeneemt.
 
@@ -99,12 +99,11 @@ abline(v=lbound, col="red")
 abline(v=ubound, col="red")
 ```
 
-Wat gebeurt er met de range $\pm 4*\sqrt{k}$ als $k\to\infty$?
+Wat gebeurt er met de verhouding $\frac {\pm 4*\sqrt{k}}{k}$ als $k\to\infty$?
 
 $$\lim_{k\to\infty} \pm \frac{4*\sqrt{k}}{k} = \lim_{k\to\infty} \pm \frac{4}{\sqrt{k}} = 0$$
 En aangezien $S_k$ bijna altijd tussen de berekende onder- en bovengrenzen ligt, betekent dit dat als $k\to\infty$, $\frac{S_k}{k}$ ook naar nul gaat.
 
-We hebben hiermee de uitspraak 'kans van 50%' geformaliseerd. Het vakgebied Kansrekening gaat over de Wiskunde die nodig is om uitspraken omtrent kansen formeel te bewijzen.
+De simulaties die we hierboven hebben uitgevoerd worden Monte Carlo simulaties genoemd. We hebben gezien dat als je zekerder wilt zijn van een hypothese je meer simulaties moet doen.
 
-!!Nog bespreken Monte Carlo
-
+Je zult natuurlijk nooit oneindig muntjes kunnen laten gooien door de computer en op deze wijze dus nooit met absolute zekerheid kunnen bepalen dat de kans op kop of munt 50% is. Het vakgebied Kansrekening gaat over de Wiskunde die nodig is om uitspraken omtrent kansen formeel te bewijzen.
