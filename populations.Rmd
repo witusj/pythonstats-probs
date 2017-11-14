@@ -8,13 +8,13 @@ Bouw een populatie met een set aan variabelen waarvan het gemiddelde en spreidin
 ```{r}
 library(ggplot2)
 N <- 50000
-id <- c(1:N)
 sex <- rep(c("M","F"), each=N/2)
 age <- rep(18:22, each=N/5)
 bank_m <- rep(c("ABN", "RABO"), c(N*0.3,N*0.2))
 bank_f <- rep(c("ABN", "RABO"), c(N*0.1,N*0.4))
 bank <- c(bank_m, bank_f)
-myDF <- data.frame(id, sex, age, bank)
+myDF <- data.frame(sex, age, bank)
+myDF[sample(1:N,10),]
 summary(myDF)
 
 tbl1 <- table(bank)
@@ -44,7 +44,7 @@ generate_samples <- function(N = 1000, n = 10, m = 10) {
 }
 
 n = 10
-m = 50
+m = 20
 aselect <- generate_samples(N = N, n = n, m = m)
 
 samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
@@ -63,7 +63,7 @@ generate_samples <- function(N = 1000, n = 10, m = 10) {
 }
 
 n = 50
-m = 50
+m = 20
 aselect <- generate_samples(N = N, n = n, m = m)
 
 samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
@@ -82,7 +82,7 @@ generate_samples <- function(N = 1000, n = 10, m = 10) {
 }
 
 n = 100
-m = 50
+m = 20
 aselect <- generate_samples(N = N, n = n, m = m)
 
 samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
