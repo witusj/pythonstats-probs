@@ -1,0 +1,95 @@
+---
+title: "Populaties en steekproeven"
+output: html_notebook
+---
+
+Bouw een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is.
+
+```{r}
+library(ggplot2)
+N <- 50000
+id <- c(1:N)
+sex <- rep(c("M","F"), each=N/2)
+age <- rep(18:22, each=N/5)
+bank_m <- rep(c("ABN", "RABO"), c(N*0.3,N*0.2))
+bank_f <- rep(c("ABN", "RABO"), c(N*0.1,N*0.4))
+bank <- c(bank_m, bank_f)
+myDF <- data.frame(id, sex, age, bank)
+summary(myDF)
+
+tbl1 <- table(bank)
+prop.tbl1 <- prop.table(tbl1)
+p <- prop.tbl1[1]
+
+tbl2 <- table(sex,bank)
+tbl2
+prop.table(tbl2, 1)
+prop.table(tbl2, 2)
+
+plot1 <- ggplot(myDF) +
+  geom_bar(aes(x=sex, fill=bank))
+plot1
+
+plot2 <- ggplot(myDF) +
+  geom_bar(aes(x=bank, fill=sex))
+plot2
+```
+
+Neem verschillende steekproeven (n=10) en bepaal voor iedere steekproef de proportie ABN:RABO. Bereken daarna het gemiddelde van alle proporties.
+
+```{r}
+generate_samples <- function(N = 1000, n = 10, m = 10) {
+  X = matrix(sample(1:N, n*m), n, m)
+  return(X)
+}
+
+n = 10
+m = 50
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+hist(propABN, xlim=range(0,1), col = "mediumaquamarine", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
+
+```{r}
+generate_samples <- function(N = 1000, n = 10, m = 10) {
+  X = matrix(sample(1:N, n*m), n, m)
+  return(X)
+}
+
+n = 50
+m = 50
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+hist(propABN, xlim=range(0,1), col = "tomato", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
+
+```{r}
+generate_samples <- function(N = 1000, n = 10, m = 10) {
+  X = matrix(sample(1:N, n*m), n, m)
+  return(X)
+}
+
+n = 100
+m = 50
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+hist(propABN, xlim=range(0,1), col = "tomato", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
