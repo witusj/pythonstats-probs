@@ -104,7 +104,7 @@ aselect <- generate_samples(N = N, n = n, m = m)
 samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
 testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
 propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
-h <- hist(propABN, xlim=range(0,1), col = "tomato", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+h <- hist(propABN, xlim=range(0,1), col = "skyblue", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
 
 xfit<-seq(min(0),max(1),length=100) 
 yfit<-dnorm(xfit,mean=mean(propABN),sd=sd(propABN)) 
