@@ -5,6 +5,8 @@ output: html_notebook
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 options(scipen=999)
+library(ggplot2)
+library(plotly)
 ```
 
 We bouwen een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is. Hieruit gaan we dadelijk steekproeven (samples) trekken en onderzoeken welk effect de omvang van de steekproef heeft op de nauwkeurigheid waarmee we een uitspraak kunnen doen over variabele.
@@ -40,11 +42,11 @@ prop.table(tbl2, 2)
 
 plot1 <- ggplot(myDF) +
   geom_bar(aes(x=sex, fill=bank))
-plot1
+ggplotly(plot1)
 
 plot2 <- ggplot(myDF) +
   geom_bar(aes(x=bank, fill=sex))
-plot2
+ggplotly(plot2)
 ```
 
 We bouwen nu 3 sets van steekproeven. Iedere set bevat 20 steekproeven. Per set verschilt de steekproefomvang: 10, 50 en 100. Voor iedere steekproef bepalen we de proportie ABN in het totaal. Voor iedere set steekproeven bepalen we de gemiddelde proportie.
