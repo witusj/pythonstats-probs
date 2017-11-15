@@ -42,11 +42,11 @@ prop.table(tbl2, 2)
 
 plot1 <- ggplot(myDF) +
   geom_bar(aes(x=sex, fill=bank))
-ggplotly(plot1)
+ggplotly(plot1, width = 800)
 
 plot2 <- ggplot(myDF) +
   geom_bar(aes(x=bank, fill=sex))
-ggplotly(plot2)
+ggplotly(plot2, width = 800)
 ```
 
 We bouwen nu 3 sets van steekproeven. Iedere set bevat 20 steekproeven. Per set verschilt de steekproefomvang: 10, 50 en 100. Voor iedere steekproef bepalen we de proportie ABN in het totaal. Voor iedere set steekproeven bepalen we de gemiddelde proportie.
