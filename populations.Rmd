@@ -3,13 +3,13 @@ title: "Populaties en steekproeven"
 output: html_notebook
 ---
 
-```{r}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 options(scipen=999)
 ```
 
 We bouwen een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is. Hieruit gaan we dadelijk steekproeven (samples) trekken en onderzoeken welk effect de omvang van de steekproef heeft op de nauwkeurigheid waarmee we een uitspraak kunnen doen over variabele.
 
-Als casus nemen we een ficiteive populatie van 50.000 ondervraagden, waarvan we de volgende variabelen weten:
+Als casus nemen we een ficitieve populatie van 50.000 bankklanten, waarvan we de volgende variabelen weten:
 
 - `sex` - het geslacht van de klant
 - `age` - de leeftijd
