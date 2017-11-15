@@ -75,11 +75,6 @@ sd(propABN)
 ```
 
 ```{r}
-generate_samples <- function(N = 1000, n = 10, m = 10) {
-  X = matrix(sample(1:N, n*m), n, m)
-  return(X)
-}
-
 n = 50
 m = 20
 aselect <- generate_samples(N = N, n = n, m = m)
@@ -100,11 +95,6 @@ sd(propABN)
 ```
 
 ```{r}
-generate_samples <- function(N = 1000, n = 10, m = 10) {
-  X = matrix(sample(1:N, n*m), n, m)
-  return(X)
-}
-
 n = 100
 m = 20
 aselect <- generate_samples(N = N, n = n, m = m)
@@ -126,7 +116,7 @@ sd(propABN)
 
 Uit dit experiment blijkt volgende:
 
-- Het gemiddelde (`mean`) van de proportie binnen de afzonderlijke sets steekproeven ligt dicht bij de werkelijke proportie:`r p`
+- Het gemiddelde (`mean`) van de proportie binnen de afzonderlijke sets steekproeven ligt dicht bij de werkelijke proportie: `r p`
 - Naarmate $n$ toeneemt, neemt de spreiding rondom het gemiddelde af; er kan nauwkeuriger worden geschat wat de werkelijke waarde van het gemiddelde is.
 
 Stel we kennen de werkelijke proportie `ABN` niet. De ABN zelf schat het marktaandeel op p=0.6 We kunnen op basis van de laatste set steekproeven (m=20 en n=100) onderzoeken in hoeverre de schatting realistisch is gegeven de data.
