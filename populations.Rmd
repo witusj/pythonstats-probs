@@ -137,4 +137,4 @@ pValue <- pnorm(pSample, mean = pDist, sd = sdDist)
 
 Als de nulhypothese is dat het marktaandeel van de ABN `r pDist` bedraagt en we nemen deze voor waar aan dan is de kans dat we een steekproef trekken met een proportie `r pSample` gelijk aan `r round(pValue, 6)*100`%.
 
-**Hoe overtuigd ben je na je onderzoek dat de nulhypothese (en de schatting vande ABN) juist is?**
+**Hoe overtuigd ben je na je onderzoek dat de nulhypothese (en de schatting van de ABN) juist is?**
