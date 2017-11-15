@@ -7,6 +7,7 @@ output: html_notebook
 ---
 
 <em>Onderstaande is een bewerking van college 1.2 van de cursus "Statistics and Probability in Data Science using Python" (UCSanDiegoX -  DSE210x) op [Coursera](https://www.coursera.org/).</em>
+
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 options(scipen=999)
 ```

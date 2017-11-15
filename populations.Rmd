@@ -3,9 +3,21 @@ title: "Populaties en steekproeven"
 output: html_notebook
 ---
 
-Bouw een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is.
-
 ```{r}
+options(scipen=999)
+```
+
+We bouwen een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is. Hieruit gaan we dadelijk steekproeven (samples) trekken en onderzoeken welk effect de omvang van de steekproef heeft op de nauwkeurigheid waarmee we een uitspraak kunnen doen over variabele.
+
+Als casus nemen we een ficiteive populatie van 50.000 ondervraagden, waarvan we de volgende variabelen weten:
+
+- `sex` - het geslacht van de klant
+- `age` - de leeftijd
+- `bank` - de naam van de bank
+
+We gaan er vanuit dat dit de hele populatie is (alle klanten van twee banken binnen de onderzochte leeftijdscategorie). In werkelijkheid zal deze populatie onbekend zijn. Organisaties delen dit soort gegevens niet graag.
+
+```{r message=FALSE, warning=FALSE}
 library(ggplot2)
 N <- 50000
 sex <- rep(c("M","F"), each=N/2)
@@ -35,7 +47,7 @@ plot2 <- ggplot(myDF) +
 plot2
 ```
 
-Neem verschillende steekproeven (n=10) en bepaal voor iedere steekproef de proportie ABN:RABO. Bereken daarna het gemiddelde van alle proporties.
+We bouwen nu 3 sets van steekproeven. Iedere set bevat 20 steekproeven. Per set verschilt de steekproefomvang: 10, 50 en 100. Voor iedere steekproef bepalen we de proportie ABN in het totaal. Voor iedere set steekproeven bepalen we de gemiddelde proportie.
 
 ```{r}
 generate_samples <- function(N = 1000, n = 10, m = 10) {
@@ -93,3 +105,24 @@ mean(propABN)
 sd(propABN)
 (p*(1-p)/n)^0.5
 ```
+
+Uit dit experiment blijkt volgende:
+
+- Het gemiddelde (`mean`) van de proportie binnen de afzonderlijke sets steekproeven ligt dicht bij de werkelijke proportie:`r p`
+- Naarmate $n$ toeneemt, neemt de spreiding rondom het gemiddelde af; er kan nauwkeuriger worden geschat wat de werkelijke waarde van het gemiddelde is.
+
+Stel we kennen de werkelijke proportie `ABN` niet. De ABN zelf schat het marktaandeel op p=0.6 We kunnen op basis van de laatste set steekproeven (m=20 en n=100) onderzoeken in hoeverre de schatting realistisch is gegeven de data.
+
+```{r}
+pDist <- 0.6
+
+sdDist <- (pDist*(1-pDist)/n)^0.5
+cat("De verdeling van de steekproef gemiddeldes heeft een gemiddelde van", pDist, "en een standaard deviatie van", sdDist, "\n\n")
+
+pSample <- mean(propABN)
+
+pValue <- pnorm(pSample, mean = pDist, sd = sdDist)
+
+```
+
+Als de nulhypothese is dat het marktaandeel van de ABN `r pDist` bedraagt en we nemen deze voor waar aan dan is de kans dat we een steekproef trekken met een proportie `r pSample` gelijk aan `r round(pValue, 6)*100`%. Hoe overtuigd ben je na je onderzoek dat de nulhypothese (en de schatting vande ABN) juist is?
