@@ -1,0 +1,144 @@
+---
+title: "Populaties en steekproeven"
+output: html_notebook
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+options(scipen=999)
+library(ggplot2)
+library(plotly)
+```
+
+We bouwen een populatie met een set aan variabelen waarvan het gemiddelde en spreiding bekend is. Hieruit gaan we dadelijk steekproeven (samples) trekken en onderzoeken welk effect de omvang van de steekproef heeft op de nauwkeurigheid waarmee we een uitspraak kunnen doen over variabele.
+
+Als casus nemen we een ficitieve populatie van 50.000 bankklanten, waarvan we de volgende variabelen weten:
+
+- `sex` - het geslacht van de klant
+- `age` - de leeftijd
+- `bank` - de naam van de bank
+
+We gaan er vanuit dat dit de hele populatie is (alle klanten van twee banken binnen de onderzochte leeftijdscategorie). In werkelijkheid zal deze populatie onbekend zijn. Organisaties delen dit soort gegevens niet graag.
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+N <- 50000
+sex <- rep(c("M","F"), each=N/2)
+age <- rep(18:22, each=N/5)
+bank_m <- rep(c("ABN", "RABO"), c(N*0.3,N*0.2))
+bank_f <- rep(c("ABN", "RABO"), c(N*0.1,N*0.4))
+bank <- c(bank_m, bank_f)
+myDF <- data.frame(sex, age, bank)
+myDF[sample(1:N,10),]
+summary(myDF)
+```
+
+De dataset is zodanig opgebouwd dat het aantal respondenten per geslacht gelijk verdeeld is. Echter de verdeling per bank verschilt.
+```{r message=FALSE, warning=FALSE}
+tbl1 <- table(bank)
+prop.tbl1 <- prop.table(tbl1)
+p <- prop.tbl1[1]
+
+tbl2 <- table(sex,bank)
+tbl2
+prop.table(tbl2, 1)
+prop.table(tbl2, 2)
+
+plot1 <- ggplot(myDF) +
+  geom_bar(aes(x=sex, fill=bank))
+ggplotly(plot1, width = 800)
+
+plot2 <- ggplot(myDF) +
+  geom_bar(aes(x=bank, fill=sex))
+ggplotly(plot2, width = 800)
+```
+Als we als externe onderzoekers iets over de populatie van bankklanten willen weten, kunnen we een inductief onderzoek doen. We kunnen in dat geval aan willekeurige mensen vragen bij welke bank ze hun geldzaken regelen. Als we voldoende mensen (respondenten) bevragen, ontstaat vanzelf een beeld van de hele populatie. De set van alle respondenten is dan onze steekproef.
+
+We bouwen nu 3 sets van steekproeven. Iedere set bevat 20 steekproeven. Per set verschilt de steekproefomvang: 10, 50 en 100. Voor iedere steekproef bepalen we de proportie ABN in het totaal. Voor iedere set steekproeven bepalen we de gemiddelde proportie.
+
+```{r}
+generate_samples <- function(N = 1000, n = 10, m = 10) {
+  X = matrix(sample(1:N, n*m), n, m)
+  return(X)
+}
+
+n = 10
+m = 20
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+h <- hist(propABN, xlim=range(0,1), col = "mediumaquamarine", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+
+xfit<-seq(min(0),max(1),length=100) 
+yfit<-dnorm(xfit,mean=mean(propABN),sd=sd(propABN)) 
+yfit <- yfit*diff(h$mids[1:2])*length(propABN) 
+lines(xfit, yfit, col="blue", lwd=2)
+
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
+
+```{r}
+n = 50
+m = 20
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+h <- hist(propABN, xlim=range(0,1), col = "tomato", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+
+xfit<-seq(min(0),max(1),length=100) 
+yfit<-dnorm(xfit,mean=mean(propABN),sd=sd(propABN)) 
+yfit <- yfit*diff(h$mids[1:2])*length(propABN) 
+lines(xfit, yfit, col="blue", lwd=2)
+
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
+
+```{r}
+n = 100
+m = 20
+aselect <- generate_samples(N = N, n = n, m = m)
+
+samples <- sapply(1:m, function(x) myDF[aselect[,x],]$bank)
+testABN <- sapply(1:m, function(x) (samples[,x] == "ABN")*1)
+propABN <- sapply(1:m, function(x) sum(testABN[,x])/n)
+h <- hist(propABN, xlim=range(0,1), col = "skyblue", main = paste("Histogram of m = " , m, " samples of n = ", n, "items"))
+
+xfit<-seq(min(0),max(1),length=100) 
+yfit<-dnorm(xfit,mean=mean(propABN),sd=sd(propABN)) 
+yfit <- yfit*diff(h$mids[1:2])*length(propABN) 
+lines(xfit, yfit, col="blue", lwd=2)
+
+mean(propABN)
+sd(propABN)
+(p*(1-p)/n)^0.5
+```
+
+Uit dit experiment blijkt volgende:
+
+- Het gemiddelde (`mean`) van de proportie binnen de afzonderlijke sets steekproeven ligt dicht bij de werkelijke proportie: `r p`
+- Naarmate $n$ toeneemt, neemt de spreiding rondom het gemiddelde af; er kan nauwkeuriger worden geschat wat de werkelijke waarde van het gemiddelde is.
+
+Stel we kennen de werkelijke proportie `ABN` niet. De ABN zelf schat het marktaandeel op p=0.6 We kunnen op basis van de laatste set steekproeven (m=20 en n=100) onderzoeken in hoeverre de schatting realistisch is gegeven de data.
+
+```{r}
+pDist <- 0.6
+
+sdDist <- (pDist*(1-pDist)/n)^0.5
+cat("De verdeling van de steekproef gemiddeldes heeft een gemiddelde van", pDist, "en een standaard deviatie van", sdDist, "\n\n")
+
+pSample <- mean(propABN)
+
+pValue <- pnorm(pSample, mean = pDist, sd = sdDist)
+
+```
+
+Als de nulhypothese is dat het marktaandeel van de ABN `r pDist` bedraagt en we nemen deze voor waar aan dan is de kans dat we een steekproef trekken met een proportie `r pSample` gelijk aan `r round(pValue, 6)*100`%.
+
+**Hoe overtuigd ben je na je onderzoek dat de nulhypothese (en de schatting van de ABN) juist is?**
